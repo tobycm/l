@@ -17,6 +17,6 @@ export interface Link {
   slug: string;
   owner: ID;
   expand: {
-    owner: RecordModel;
+    owner: User;
   };
 }

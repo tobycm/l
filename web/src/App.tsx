@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Content from "./components/Content";
 import NotFound from "./pages/404";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -20,6 +21,10 @@ export default function App() {
           element: <NotFound />,
         },
       ],
+    },
+    {
+      path: "/login",
+      element: <Login />,
     },
   ]);
 

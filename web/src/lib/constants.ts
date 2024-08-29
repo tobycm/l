@@ -1,3 +1,5 @@
-export default class Constants {
-  readonly API_URL = "http://localhost:8080";
-}
+const Constants = {
+  PocketBaseURL: "http://localhost:8090",
+} as const;
+
+export default Constants;
