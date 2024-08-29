@@ -3,9 +3,12 @@ import { Alert, Button, Flex, PasswordInput, Space, TextInput, Title } from "@ma
 import { isNotEmpty, useForm } from "@mantine/form";
 import { ClientResponseError } from "pocketbase";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import pocketbase from "../lib/database";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const form = useForm({
     initialValues: {
       username: "",
@@ -18,7 +21,6 @@ export default function Login() {
   });
 
   const [alert, setAlert] = useState<ReturnType<typeof Alert>>();
-  (() => setAlert)(); // eslint noisy af
 
   return (
     <Flex w="100vw" h="100vh" direction="column" justify="center" align="center">
@@ -42,9 +44,11 @@ export default function Login() {
                   </Alert>
                 );
             }
+
+            navigate("/");
           })}
         >
-          <Flex mt="xl" direction="column" component="form">
+          <Flex mt="xl" direction="column">
             <TextInput label="Username" placeholder="Enter your username" required key={form.key("username")} {...form.getInputProps("username")} />
             <PasswordInput
               mt="sm"

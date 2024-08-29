@@ -1,4 +1,4 @@
-import { Box, Container, Flex } from "@mantine/core";
+import { Box, Container, Flex, Image } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,9 +16,10 @@ export default function Header() {
 
     pocketbase
       .collection("users")
-      .authRefresh()
-      .catch(() => {
+      .authRefresh({ requestKey: null })
+      .catch((error) => {
         // not logged in
+        console.log(error);
         navigate("/login");
       });
   }, []);
@@ -37,13 +38,21 @@ export default function Header() {
           </Link>
         </Drawer> */}
         <Flex align="center" direction={isMobile ? "column" : "row"} justify="space-between">
-          <Flex w={"100%"} align="center">
+          <Flex w="100%" align="center">
             {/* <Burger opened={drawerOpened} onClick={toggleDrawer} size="sm" maw={"28px"} mr="sm" hiddenFrom="sm" /> */}
             <Link to={"/"} style={{ display: "flex", justifyContent: "center", marginLeft: "6px" }}>
               {/* <Image src={"/images/full_logo.svg"} mih={60} mah={70} h="7vh" w={"auto"} style={{ pointerEvents: "none" }} /> */}
-              <p>nhăm nhăm</p>
+              <p>Shorl</p>
             </Link>
           </Flex>
+
+          <Image
+            src={pocketbase.getFileUrl(pocketbase.authStore.model, pocketbase.authStore.model.avatar)}
+            fallbackSrc="/no_avatar.png"
+            w="auto"
+            h="7vh"
+            style={{ cursor: "pointer" }}
+          />
         </Flex>
       </Container>
     </Box>
