@@ -1,0 +1,37 @@
+.footer {
+  width: 100%;
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-2), transparent);
+  margin-top: 5vh;
+  padding: 3.5vh 7vw 3.5vh 7vw;
+  border-top: rem(1px) solid light-dark(var(--mantine-color-gray-2), transparent);
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: 48em) {
+    flex-direction: column;
+  }
+}
+
+.innerFooter {
+  width: 100%;
+  padding-right: 7vw;
+  padding-left: 7vw;
+  background-color: #e9ecef;
+}
+
+.information {
+  max-width: calc(90vw / 4);
+
+  @media screen and (max-width: 48em) {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    max-width: 80vw;
+  }
+}
+
+.icon {
+  color: #485665;
+  margin-right: 5px;
+  min-width: 24px;
+}
