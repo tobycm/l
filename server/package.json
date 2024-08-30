@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/eventsource": "^1.1.15",
+    "eventsource": "^2.0.2",
+    "pocketbase": "^0.21.5"
+  }
+}
