@@ -1,16 +1,16 @@
-import type { RecordModel } from "pocketbase";
+import type { AuthModel, RecordModel } from "pocketbase";
 
 type Filename = string;
 type ID = string;
 type Permissions = ("create" | "update" | "delete")[];
 
-export interface User extends RecordModel {
+export type User = {
   username: string;
   email: string;
   name: string;
   avatar: Filename;
   permissions: Permissions[];
-}
+} & AuthModel;
 
 export interface Link {
   url: string;
@@ -20,3 +20,5 @@ export interface Link {
     owner: User;
   };
 }
+
+export type PBLink = Link & RecordModel;

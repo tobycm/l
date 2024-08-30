@@ -4,7 +4,7 @@ import { isNotEmpty, useForm } from "@mantine/form";
 import { ClientResponseError } from "pocketbase";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import pocketbase from "../lib/database";
+import pocketbase from "../../../pocketbase";
 
 export default function Login() {
   const navigate = useNavigate();

@@ -1,4 +1,7 @@
 {
   "name": "shorl",
-  "description": "An app that shortens URLs"
+  "description": "An app that shortens URLs",
+  "dependencies": {
+    "pocketbase": "^0.21.5"
+  }
 }

@@ -2,7 +2,7 @@ import { Box, Container, Flex, Image } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import pocketbase from "../../lib/database";
+import pocketbase from "../../../../pocketbase";
 import classes from "./index.module.css";
 
 export default function Header() {
@@ -17,9 +17,8 @@ export default function Header() {
     pocketbase
       .collection("users")
       .authRefresh({ requestKey: null })
-      .catch((error) => {
+      .catch(() => {
         // not logged in
-        console.log(error);
         navigate("/login");
       });
   }, []);

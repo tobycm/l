@@ -4,11 +4,11 @@ import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconDeviceFloppy, IconEdit, IconExclamationCircle } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { ClientResponseError, RecordModel } from "pocketbase";
-import pocketbase from "../lib/database";
-import { Link } from "../lib/database/models";
+import { ClientResponseError } from "pocketbase";
+import pocketbase from "../../../pocketbase";
+import { PBLink } from "../../../pocketbase/models";
 
-export default function EditButton({ link }: { link: Link & RecordModel }) {
+export default function EditButton({ link }: { link: PBLink }) {
   const queryClient = useQueryClient();
 
   const form = useForm({

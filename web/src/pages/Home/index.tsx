@@ -4,8 +4,8 @@ import { IconExclamationCircle, IconTrash } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { ClientResponseError } from "pocketbase";
+import pocketbase from "../../../../pocketbase";
 import EditButton from "../../components/EditButton";
-import pocketbase from "../../lib/database";
 
 export default function Home() {
   const queryClient = useQueryClient();

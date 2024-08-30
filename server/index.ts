@@ -1,6 +1,11 @@
+import pocketbase from "database";
+import eventsource from "eventsource";
 import { ClientResponseError } from "pocketbase";
 import Cache from "./cache";
-import pocketbase from "./database";
+
+// Polyfill EventSource for Node.js
+// @ts-ignore
+global.EventSource = eventsource;
 
 interface Link {
   url: string;
