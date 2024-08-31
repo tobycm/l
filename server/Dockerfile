@@ -1,10 +1,20 @@
 FROM oven/bun:alpine
 
-WORKDIR /app
+WORKDIR /app/server
 
-COPY ../server ./
-COPY ../pocketbase/*.ts /app/pocketbase/
+COPY ./web/package.json .
+COPY ./web/bun.lockb .
 
 RUN bun install
+
+COPY ./server .
+
+
+WORKDIR /app/pocketbase
+
+COPY ./pocketbase/*.ts .
+
+
+WORKDIR /app/server
 
 CMD ["bun", "run", "start"]

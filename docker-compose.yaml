@@ -1,20 +1,21 @@
 services:
-pocketbase:
-  container_name: pocketbase
-  image: elestio/pocketbase
-  restart: unless-stopped
-  user: 0:0
-  ports:
-    - 8090:8090
-  volumes:
-    - ./pocketbase/pb_data:/pb_data
+  pocketbase:
+    container_name: pocketbase
+    image: elestio/pocketbase
+    restart: unless-stopped
+    user: 0:0
+    ports:
+      - 8090:8090
+    volumes:
+      - ./pocketbase/pb_data:/pb_data
 
-server:
-  container_name: shorl-server
-  build: ./server
-  image: tobycm/shorl-server
-  restart: unless-stopped
-  ports:
-    - 3000:3000
-  environment:
-    - POCKETBASE_URL=http://pocketbase:8090
+  server:
+    container_name: shorl-server
+    build:
+      context: ./
+      dockerfile: ./server/Dockerfile
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      - POCKETBASE_URL=http://pocketbase:8090

@@ -1,21 +1,33 @@
 FROM oven/bun:latest AS build
 
-WORKDIR /app
+WORKDIR /app/web
 
-COPY package.json ./
-COPY bun.lockb ./
-COPY index.html ./
-COPY vite.config.ts ./
-COPY postcss.config.cjs ./
-COPY src ./
-COPY public ./
+COPY ./web/package.json .
+COPY ./web/bun.lockb .
 
 RUN bun install
 
+
+COPY ./web/index.html .
+COPY ./web/vite.config.ts .
+COPY ./web/postcss.config.cjs .
+COPY ./web/src .
+COPY ./web/public .
+
+WORKDIR /app/pocketbase
+
+COPY ./pocketbase/*.ts .
+
+
+
+WORKDIR /app/web
+
 RUN bun run build
+
+
 
 FROM nginx:alpine
 
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/web/dist /usr/share/nginx/html
 
 EXPOSE 80
