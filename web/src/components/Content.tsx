@@ -3,7 +3,6 @@ import { ClientResponseError } from "pocketbase";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
 import { ScrollRestoration } from "react-router-dom";
-import Constants from "../lib/constants";
 import Maintenance from "../pages/Maintenance";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -20,7 +19,7 @@ export default function Content() {
   );
 
   useEffect(() => {
-    fetch(`${Constants.PocketBaseURL}/api`)
+    fetch(`${import.meta.env.POCKETBASE_URL}/api`)
       .then((res) => {
         if (res.status !== 200 && res.status !== 404) setPage(<Maintenance error={{ status: res.status, error: "Unknown" }} />);
       })
