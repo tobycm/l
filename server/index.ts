@@ -11,14 +11,12 @@ interface Link {
   url: string;
 }
 
-const cache = new Cache<string, Link>(); // slug -> url
+const cache = new Cache<string, Link>(1000 * 60 * 60); // 1 hour cache
 
 pocketbase.collection("links").subscribe("*", (data) => {
   if (data.action === "delete") cache.delete(data.record.slug);
   if (data.action === "update") cache.update(data.record.slug, { url: data.record.url });
 });
-
-setInterval(() => cache.banWave(), 1000 * 60 * 60); // 1 hour cache
 
 Bun.serve({
   async fetch(request) {

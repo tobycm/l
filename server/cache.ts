@@ -1,4 +1,16 @@
 export default class Cache<K, V> extends Map<K, V & { stale: boolean }> {
+  constructor(lifespan: number) {
+    super();
+    setInterval(() => this.banWave(), lifespan);
+  }
+
+  set(key: K, value: V & { stale?: boolean }) {
+    return super.set(key, {
+      ...value,
+      stale: false,
+    });
+  }
+
   get(key: K) {
     const value = super.get(key);
     if (!value) return;
