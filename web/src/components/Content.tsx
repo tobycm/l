@@ -22,7 +22,7 @@ export default function Content() {
   useEffect(() => {
     fetch(`${Constants.PocketBaseURL}/api`)
       .then((res) => {
-        if (res.status !== 200) setPage(<Maintenance error={{ status: res.status, error: "Unknown" }} />);
+        if (res.status !== 200 && res.status !== 404) setPage(<Maintenance error={{ status: res.status, error: "Unknown" }} />);
       })
       .catch((error) => {
         const betterError =

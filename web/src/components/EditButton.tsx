@@ -1,4 +1,4 @@
-import { Button, Flex, Modal, TextInput } from "@mantine/core";
+import { Button, Flex, Modal, Select, TextInput } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -15,6 +15,7 @@ export default function EditButton({ link }: { link: PBLink }) {
     initialValues: {
       slug: link.slug,
       url: link.url,
+      privacy: link.privacy,
     },
     validate: {
       slug: isNotEmpty("Slug is required"),
@@ -53,6 +54,16 @@ export default function EditButton({ link }: { link: PBLink }) {
         >
           <TextInput label="Slug" w="100%" placeholder="Enter your slug" required key={form.key("slug")} {...form.getInputProps("slug")} />
           <TextInput label="URL" w="100%" mt={"md"} placeholder="Enter your URL" required key={form.key("url")} {...form.getInputProps("url")} />
+          <Select
+            label="Privacy"
+            w="100%"
+            mt={"md"}
+            data={["public", "unlisted"]}
+            placeholder="public"
+            required
+            key={form.key("privacy")}
+            {...form.getInputProps("privacy")}
+          />
           <Button type="submit" mt={"md"} leftSection={<IconDeviceFloppy />}>
             Save
           </Button>

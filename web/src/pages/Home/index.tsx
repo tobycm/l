@@ -5,7 +5,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { ClientResponseError } from "pocketbase";
 import pocketbase from "../../../../pocketbase";
+import CreateButton from "../../components/CreateButton";
 import EditButton from "../../components/EditButton";
+import { toTitleCase } from "../../lib/utils";
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -25,13 +27,16 @@ export default function Home() {
       </Flex>
     );
 
+  console.log(links);
+
   const data: TableData = {
-    head: ["Edit", "Slug", "URL", "Owner", "Created", "Updated", "Delete"],
+    head: ["Edit", "Slug", "URL", "Owner", "Privacy", "Created", "Updated", "Delete"],
     body: links.data.map((link) => [
       <EditButton link={link} key={link.id} />,
       link.slug,
       link.url,
       link.expand.owner.name ?? link.expand.owner.username ?? link.expand.owner.email,
+      toTitleCase(link.privacy),
       new Date(link.created).toLocaleDateString(),
       new Date(link.updated).toLocaleDateString(),
       <Button
@@ -63,6 +68,8 @@ export default function Home() {
   return (
     <Flex w="100%" h="100%" direction="column" justify="center" align="center">
       <Title order={2}>Welcome to Shorl, {user.name ?? user.username ?? user.email}!</Title>
+
+      {user.permissions.includes("create") && <CreateButton />}
 
       <ScrollArea m="xl" offsetScrollbars={"y"} type="always" h="55vh" w="85%">
         <Table

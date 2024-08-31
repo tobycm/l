@@ -1,11 +1,22 @@
 export default class Cache<K, V> extends Map<K, V & { stale: boolean }> {
+  get(key: K) {
+    const value = super.get(key);
+    if (!value) return;
+
+    this.set(key, {
+      ...value,
+      stale: false,
+    });
+
+    return value;
+  }
+
   update(key: K, value: V) {
     const current = this.get(key) ?? { stale: true };
 
     this.set(key, {
       ...current,
       ...value,
-      stale: false,
     });
   }
 
