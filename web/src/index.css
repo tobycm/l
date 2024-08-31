@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,8 +13,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-#root {
+/* #root {
   background-image: url("/bg.png");
   background-repeat: repeat;
-  background-size: 15vw;
-}
+  background-size: 10vw;
+} */
