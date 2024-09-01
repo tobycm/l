@@ -1,17 +1,14 @@
-import { Button, Flex, Loader, rgba, ScrollArea, Table, TableData, Title } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconExclamationCircle, IconTrash } from "@tabler/icons-react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Flex, Loader, rgba, ScrollArea, Table, TableData, Title } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
 
-import { ClientResponseError } from "pocketbase";
 import pocketbase from "../../../pocketbase";
 import CreateButton from "../components/CreateButton";
+import DeleteButton from "../components/DeleteButton";
 import EditButton from "../components/EditButton";
+import QRButton from "../components/GenerateQRButton";
 import { toTitleCase } from "../lib/utils";
 
 export default function Home() {
-  const queryClient = useQueryClient();
-
   const links = useQuery({
     queryKey: ["links"],
     queryFn: async () => (await pocketbase.collection("links").getList(0, 20, { expand: "owner" })).items,
@@ -30,7 +27,7 @@ export default function Home() {
   console.log(links);
 
   const data: TableData = {
-    head: ["Edit", "Slug", "URL", "Owner", "Privacy", "Created", "Updated", "Delete"],
+    head: ["Edit", "Slug", "URL", "Owner", "Privacy", "Created", "Updated", "QR", "Delete"],
     body: links.data.map((link) => [
       <EditButton link={link} key={link.id} />,
       link.slug,
@@ -39,29 +36,8 @@ export default function Home() {
       toTitleCase(link.privacy || "Public"),
       new Date(link.created).toLocaleDateString(),
       new Date(link.updated).toLocaleDateString(),
-      <Button
-        bg="red"
-        key={link.id}
-        onClick={async () => {
-          try {
-            // if (import.meta.env.DEV) throw new ClientResponseError("lmao");
-            await pocketbase.collection("links").delete(link.id);
-            await queryClient.invalidateQueries({ queryKey: ["links"] });
-          } catch (error) {
-            if (!(error instanceof ClientResponseError)) return console.error(error);
-
-            notifications.show({
-              title: `Failed to delete short link ${link.slug}`,
-              message: `Error: ${error.originalError}`,
-              autoClose: 10000,
-              color: "red",
-              icon: <IconExclamationCircle />,
-            });
-          }
-        }}
-      >
-        <IconTrash />
-      </Button>,
+      <QRButton link={link} key={link.id} />,
+      <DeleteButton link={link} key={link.id} />,
     ]),
   };
 
