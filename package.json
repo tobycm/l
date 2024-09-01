@@ -1,6 +1,9 @@
 {
   "name": "shorl",
   "description": "An app that shortens URLs",
+  "scripts": {
+    "cloudflare-special-treatment": "cd web && bun i && bun run build"
+  },
   "dependencies": {
     "pocketbase": "^0.21.5"
   }
