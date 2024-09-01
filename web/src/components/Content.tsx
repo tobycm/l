@@ -19,7 +19,7 @@ export default function Content() {
   );
 
   useEffect(() => {
-    fetch(`${import.meta.env.POCKETBASE_URL}/api`)
+    fetch(`${import.meta.env.VITE_POCKETBASE_URL}/api`)
       .then((res) => {
         if (res.status !== 200 && res.status !== 404) setPage(<Maintenance error={{ status: res.status, error: "Unknown" }} />);
       })
