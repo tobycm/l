@@ -24,8 +24,6 @@ export default function Home() {
       </Flex>
     );
 
-  console.log(links);
-
   const data: TableData = {
     head: ["Edit", "Slug", "URL", "Owner", "Privacy", "Created", "Updated", "QR", "Delete"],
     body: links.data.map((link) => [
@@ -48,14 +46,16 @@ export default function Home() {
       {user.permissions.includes("create") && <CreateButton />}
 
       <ScrollArea mt="3vh" mb="3vh" ml="2vw" mr="2vw" offsetScrollbars={"y"} type="always" h="55vh">
-        <Table
-          data={data}
-          stickyHeader
-          // striped
-          withTableBorder
-          withColumnBorders
-          styles={{ table: { background: rgba("#FFFFFF", 0.5) }, tr: {} }}
-        />
+        {data.body?.length ? (
+          <Table
+            data={data}
+            stickyHeader
+            // striped
+            withTableBorder
+            withColumnBorders
+            styles={{ table: { background: rgba("#FFFFFF", 0.5) }, tr: {} }}
+          />
+        ) : null}
       </ScrollArea>
     </Flex>
   );

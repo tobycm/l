@@ -17,7 +17,7 @@ export default function CreateButton() {
       privacy: "",
     },
     validate: {
-      slug: (value) => value && value.trim().length > 1 && value.match(/^\/[a-zA-Z0-9\-._~]*$/),
+      slug: (value) => value && value.trim().length > 1 && (value.match(/^\/[a-zA-Z0-9\-._~]*$/) ? null : "Please conform to /{slug} format"),
       url: isNotEmpty("URL is required"),
     },
   });
@@ -35,14 +35,14 @@ export default function CreateButton() {
           // @ts-ignore lmao eslint
           onSubmit={form.onSubmit(async (values) => {
             try {
-              await pocketbase.collection("links").create(values);
+              await pocketbase.collection("links").create({ ...values, owner: pocketbase.authStore.model.id });
               await queryClient.invalidateQueries({ queryKey: ["links"] });
             } catch (error) {
               if (!(error instanceof ClientResponseError)) return console.error(error);
 
               notifications.show({
                 title: `Failed to create short link ${values.slug}`,
-                message: `Error: ${error.originalError}`,
+                message: `Error: ${error.name}`,
                 autoClose: 10000,
                 color: "red",
                 icon: <IconExclamationCircle />,
