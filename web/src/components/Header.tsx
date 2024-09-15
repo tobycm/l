@@ -30,6 +30,7 @@ export default function Header() {
 
       <Image
         src={pocketbase.authStore.model ? pocketbase.getFileUrl(pocketbase.authStore.model, pocketbase.authStore.model.avatar) : noAvatar}
+        fallbackSrc={noAvatar}
         w="auto"
         h="7vh"
         style={{ cursor: "pointer" }}
