@@ -1,7 +1,9 @@
 services:
   pocketbase:
     container_name: pocketbase
-    image: elestio/pocketbase
+    build:
+      context: ./pocketbase
+      dockerfile: Dockerfile
     restart: unless-stopped
     user: 0:0
     ports:

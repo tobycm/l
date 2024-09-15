@@ -35,6 +35,8 @@ Bun.serve({
     } catch (error) {
       if (!(error instanceof ClientResponseError)) return new Response(error as any, { status: 500 });
 
+      if (error.status === 404) return new Response("Not found", { status: 404 });
+
       return new Response(error.message, { status: error.status });
     }
 
