@@ -33,6 +33,10 @@ export default function Header() {
         w="auto"
         h="7vh"
         style={{ cursor: "pointer" }}
+        onClick={() => {
+          pocketbase.authStore.clear();
+          navigate("/login");
+        }}
       />
     </Flex>
   );

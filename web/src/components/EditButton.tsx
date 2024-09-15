@@ -70,7 +70,7 @@ export default function EditButton({ link }: { link: PBLink }) {
         </Flex>
       </Modal>
 
-      <Button onClick={modalControls.open}>
+      <Button px={"xs"} onClick={modalControls.open}>
         <IconEdit />
       </Button>
     </>

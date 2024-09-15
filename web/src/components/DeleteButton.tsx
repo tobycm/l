@@ -11,6 +11,7 @@ export default function DeleteButton({ link }: { link: PBLink }) {
 
   return (
     <Button
+      px={"xs"}
       bg="red"
       key={link.id}
       onClick={async () => {

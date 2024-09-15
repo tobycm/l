@@ -1,11 +1,12 @@
 import { Flex, Loader, rgba, ScrollArea, Table, TableData, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
+import { useEffect } from "react";
 import pocketbase from "../../../pocketbase";
 import CreateButton from "../components/CreateButton";
 import DeleteButton from "../components/DeleteButton";
 import EditButton from "../components/EditButton";
-import QRButton from "../components/GenerateQRButton";
+import ShareButton from "../components/ShareButton";
 import { toTitleCase } from "../lib/utils";
 
 export default function Home() {
@@ -17,6 +18,12 @@ export default function Home() {
 
   const user = pocketbase.authStore.model;
 
+  useEffect(() => {
+    if (user) return;
+
+    links.refetch();
+  }, [user]);
+
   if (!links.isFetched)
     return (
       <Flex w="100%" h="100%" direction="column" justify="center" align="center">
@@ -25,7 +32,7 @@ export default function Home() {
     );
 
   const data: TableData = {
-    head: ["Edit", "Slug", "URL", "Owner", "Privacy", "Created", "Updated", "QR", "Delete"],
+    head: ["Edit", "Slug", "URL", "Owner", "Privacy", "Created", "Updated", "Share", "Delete"],
     body: links.data.map((link) => [
       <EditButton link={link} key={link.id} />,
       link.slug,
@@ -34,7 +41,7 @@ export default function Home() {
       toTitleCase(link.privacy || "Public"),
       new Date(link.created).toLocaleDateString(),
       new Date(link.updated).toLocaleDateString(),
-      <QRButton link={link} key={link.id} />,
+      <ShareButton link={link} key={link.id} />,
       <DeleteButton link={link} key={link.id} />,
     ]),
   };
