@@ -7,8 +7,10 @@ import "@fontsource/ubuntu";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ClientResponseError } from "pocketbase";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import pocketbase from "../../pocketbase";
 import App from "./App";
 import "./index.css";
 
@@ -17,6 +19,19 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
     },
+  },
+});
+
+queryClient.fetchQuery({
+  queryKey: ["registerOk"],
+  queryFn: async () => {
+    try {
+      await pocketbase.collection("users").create({});
+    } catch (error) {
+      return error instanceof ClientResponseError && error.status === 400;
+    }
+
+    return false;
   },
 });
 

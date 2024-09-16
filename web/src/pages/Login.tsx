@@ -1,70 +1,52 @@
-import { Alert, Button, Flex, PasswordInput, Space, TextInput, Title } from "@mantine/core";
+import { Divider, Flex, Loader, Title } from "@mantine/core";
 
-import { isNotEmpty, useForm } from "@mantine/form";
+import { useMediaQuery } from "@mantine/hooks";
+import { useQuery } from "@tanstack/react-query";
 import { ClientResponseError } from "pocketbase";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import pocketbase from "../../../pocketbase";
+import LoginForm from "../components/LoginForm";
+import RegisterForm from "../components/RegisterForm";
 
 export default function Login() {
-  const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width: 40em)");
 
-  const form = useForm({
-    initialValues: {
-      username: "",
-      password: "",
-    },
-    validate: {
-      username: isNotEmpty("Username is required"),
-      password: isNotEmpty("Password is required"),
+  const registerOk = useQuery({
+    queryKey: ["registerOk"],
+    queryFn: async () => {
+      try {
+        await pocketbase.collection("users").create({});
+      } catch (error) {
+        return error instanceof ClientResponseError && error.status === 400;
+      }
+
+      return false;
     },
   });
 
-  const [alert, setAlert] = useState<ReturnType<typeof Alert>>();
+  if (!registerOk.isFetched)
+    return (
+      <Flex w="100vw" h="100vh">
+        <Flex justify="center" align="center" m="auto" direction="column">
+          <Title order={1}>Loading...</Title>
+          <Loader mt="lg" />
+        </Flex>
+      </Flex>
+    );
 
   return (
-    <Flex w="100vw" h="100vh" direction="column" justify="center" align="center">
-      <Flex direction="column" justify="center" miw="40%">
-        {alert}
-        {alert && <Space h="xl" />}
+    <Flex {...(isMobile ? { w: "90vw", mt: "lg" } : { w: "80vw", h: "100vh" })} mx="auto" align="center">
+      <Flex direction={isMobile ? "column" : "row"} w="100%" maw="48rem" mx="auto" justify="space-between" align={isMobile ? "center" : "start"}>
+        <LoginForm />
 
-        <Title order={1}>Login</Title>
-        <Flex
-          component="form"
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore lmao eslint ồn thật
-          onSubmit={form.onSubmit(async (values) => {
-            try {
-              await pocketbase.collection("users").authWithPassword(values.username, values.password);
-            } catch (error) {
-              if (error instanceof ClientResponseError)
-                setAlert(
-                  <Alert color="red" title="Error" onClose={() => setAlert(undefined)}>
-                    {error.message}
-                  </Alert>
-                );
-            }
+        {registerOk.data ? (
+          <Divider
+            size="sm"
+            {...(isMobile ? { w: "60%", my: "lg" } : { h: "50vh", my: "auto" })}
+            orientation={isMobile ? "horizontal" : "vertical"}
+          />
+        ) : null}
 
-            navigate("/");
-          })}
-        >
-          <Flex mt="xl" direction="column">
-            <TextInput label="Username" placeholder="Enter your username" required key={form.key("username")} {...form.getInputProps("username")} />
-            <PasswordInput
-              mt="sm"
-              label="Password"
-              placeholder="Enter your password"
-              required
-              key={form.key("password")}
-              {...form.getInputProps("password")}
-            />
-            <Flex mt="xl">
-              <Button color="cyan" type="submit">
-                Sign in
-              </Button>
-            </Flex>
-          </Flex>
-        </Flex>
+        {registerOk.data ? <RegisterForm /> : null}
       </Flex>
     </Flex>
   );

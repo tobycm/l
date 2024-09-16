@@ -35,7 +35,6 @@ With web frontend:
 docker compose -f docker-compose-full.yaml up
 ```
 
-
 Without web frontend:
 
 ```sh {"id":"01J6K7EA5RF6T2N4YPVTZZ6C9D"}
@@ -88,6 +87,10 @@ bun run dev
 cd server
 bun run start
 ```
+
+### Disabling sign up (optional)
+
+You can go to your PocketBase admin dashboard (`https://<your pocketbase url>/_/`) and set `users` collection create rule to admin only.
 
 ## 📚 Tech Stack
 
