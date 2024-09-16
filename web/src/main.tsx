@@ -44,5 +44,3 @@ createRoot(document.getElementById("root")!).render(
     </QueryClientProvider>
   </StrictMode>
 );
-
-console.log(pocketbase);

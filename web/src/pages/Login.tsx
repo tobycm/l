@@ -1,6 +1,7 @@
-import { Divider, Flex, Loader, Title } from "@mantine/core";
+import { Alert, Divider, Flex, Loader, Title } from "@mantine/core";
 
 import { useMediaQuery } from "@mantine/hooks";
+import { Notifications, notifications } from "@mantine/notifications";
 import { useQuery } from "@tanstack/react-query";
 import { ClientResponseError } from "pocketbase";
 import pocketbase from "../../../pocketbase";
@@ -23,6 +24,14 @@ export default function Login() {
     },
   });
 
+  function setAlert(alert: ReturnType<typeof Alert>) {
+    notifications.show({
+      message: alert,
+      color: "red",
+      autoClose: 10000,
+    });
+  }
+
   if (!registerOk.isFetched)
     return (
       <Flex w="100vw" h="100vh">
@@ -34,20 +43,24 @@ export default function Login() {
     );
 
   return (
-    <Flex {...(isMobile ? { w: "90vw", mt: "lg" } : { w: "80vw", h: "100vh" })} mx="auto" align="center">
-      <Flex direction={isMobile ? "column" : "row"} w="100%" maw="48rem" mx="auto" justify="space-between" align={isMobile ? "center" : "start"}>
-        <LoginForm />
+    <>
+      <Notifications limit={5} />
 
-        {registerOk.data ? (
-          <Divider
-            size="sm"
-            {...(isMobile ? { w: "60%", my: "lg" } : { h: "50vh", my: "auto" })}
-            orientation={isMobile ? "horizontal" : "vertical"}
-          />
-        ) : null}
+      <Flex {...(isMobile ? { w: "90vw", mt: "lg" } : { w: "80vw", h: "100vh" })} mx="auto" align="center">
+        <Flex direction={isMobile ? "column" : "row"} w="100%" maw="48rem" mx="auto" justify="space-between" align={isMobile ? "center" : "start"}>
+          <LoginForm setAlert={setAlert} />
 
-        {registerOk.data ? <RegisterForm /> : null}
+          {registerOk.data ? (
+            <Divider
+              size="sm"
+              {...(isMobile ? { w: "60%", my: "lg" } : { h: "50vh", my: "auto" })}
+              orientation={isMobile ? "horizontal" : "vertical"}
+            />
+          ) : null}
+
+          {registerOk.data ? <RegisterForm setAlert={setAlert} /> : null}
+        </Flex>
       </Flex>
-    </Flex>
+    </>
   );
 }

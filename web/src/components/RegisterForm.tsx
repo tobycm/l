@@ -1,12 +1,11 @@
-import { Alert, Button, Flex, PasswordInput, Space, TextInput, Title } from "@mantine/core";
+import { Alert, Button, Flex, PasswordInput, TextInput, Title } from "@mantine/core";
 
 import { isNotEmpty, useForm } from "@mantine/form";
 import { ClientResponseError } from "pocketbase";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import pocketbase from "../../../pocketbase";
 
-export default function RegisterForm() {
+export default function RegisterForm({ setAlert }: { setAlert: (alert: ReturnType<typeof Alert>) => void }) {
   const navigate = useNavigate();
 
   const form = useForm({
@@ -23,13 +22,8 @@ export default function RegisterForm() {
     },
   });
 
-  const [alert, setAlert] = useState<ReturnType<typeof Alert>>();
-
   return (
     <Flex direction="column" justify="center" miw="30%" w="auto">
-      {alert}
-      {alert && <Space h="xl" />}
-
       <Title order={1}>Register</Title>
       <Flex
         component="form"

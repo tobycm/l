@@ -1,8 +1,9 @@
-import { Flex, Image } from "@mantine/core";
+import { Flex, Image, Menu } from "@mantine/core";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import pocketbase from "../../../pocketbase";
 
+import { IconLogout } from "@tabler/icons-react";
 import logo from "/MATHEOS.svg";
 import noAvatar from "/no_avatar.png";
 
@@ -28,17 +29,31 @@ export default function Header() {
         <Image src={logo} w="auto" h="7vh" />
       </Link>
 
-      <Image
-        src={pocketbase.authStore.model ? pocketbase.getFileUrl(pocketbase.authStore.model, pocketbase.authStore.model.avatar) : noAvatar}
-        fallbackSrc={noAvatar}
-        w="auto"
-        h="7vh"
-        style={{ cursor: "pointer" }}
-        onClick={() => {
-          pocketbase.authStore.clear();
-          navigate("/login");
-        }}
-      />
+      <Menu>
+        <Menu.Target>
+          <Image
+            src={pocketbase.authStore.model ? pocketbase.getFileUrl(pocketbase.authStore.model, pocketbase.authStore.model.avatar) : noAvatar}
+            fallbackSrc={noAvatar}
+            w="auto"
+            h="6vh"
+            mr="sm"
+            style={{ cursor: "pointer" }}
+          />
+        </Menu.Target>
+
+        <Menu.Dropdown>
+          <Menu.Item
+            color="red"
+            leftSection={<IconLogout />}
+            onClick={() => {
+              pocketbase.authStore.clear();
+              navigate("/login");
+            }}
+          >
+            Logout
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
     </Flex>
   );
 }

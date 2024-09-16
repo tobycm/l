@@ -1,12 +1,16 @@
-import { Alert, Button, Flex, PasswordInput, Space, Text, TextInput, Title } from "@mantine/core";
+import { Alert, Button, Flex, PasswordInput, Text, TextInput, Title } from "@mantine/core";
 
 import { isNotEmpty, useForm } from "@mantine/form";
 import { ClientResponseError } from "pocketbase";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import pocketbase from "../../../pocketbase";
 
-export default function LoginForm() {
+export default function LoginForm({ setAlert }: { setAlert: (alert: ReturnType<typeof Alert>) => void }) {
+  const guestCredentials = {
+    username: "public",
+    password: "public",
+  };
+
   const navigate = useNavigate();
 
   const form = useForm({
@@ -20,13 +24,8 @@ export default function LoginForm() {
     },
   });
 
-  const [alert, setAlert] = useState<ReturnType<typeof Alert>>();
-
   return (
     <Flex direction="column" justify="center" miw="30%" w="auto">
-      {alert}
-      {alert && <Space h="xl" />}
-
       <Title order={1}>Login</Title>
       <Flex
         component="form"
@@ -35,6 +34,7 @@ export default function LoginForm() {
         onSubmit={form.onSubmit(async (values) => {
           try {
             await pocketbase.collection("users").authWithPassword(values.username, values.password);
+            navigate("/");
           } catch (error) {
             if (error instanceof ClientResponseError)
               setAlert(
@@ -43,8 +43,6 @@ export default function LoginForm() {
                 </Alert>
               );
           }
-
-          navigate("/");
         })}
       >
         <Flex mt="xl" direction="column">
@@ -65,7 +63,22 @@ export default function LoginForm() {
 
           <Text my="md">or</Text>
 
-          <Button color="yellow" onClick={() => {}}>
+          <Button
+            color="yellow"
+            onClick={async () => {
+              try {
+                await pocketbase.collection("users").authWithPassword(guestCredentials.username, guestCredentials.password);
+                navigate("/");
+              } catch (error) {
+                if (error instanceof ClientResponseError)
+                  setAlert(
+                    <Alert color="red" title="Error" onClose={() => setAlert(undefined)}>
+                      Guest account is not available
+                    </Alert>
+                  );
+              }
+            }}
+          >
             Continue as guest
           </Button>
         </Flex>
