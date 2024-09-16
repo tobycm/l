@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Tooltip } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconExclamationCircle, IconTrash } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -9,11 +9,16 @@ import { PBLink } from "../../../pocketbase/models";
 export default function DeleteButton({ link }: { link: PBLink }) {
   const queryClient = useQueryClient();
 
-  return (
+  const user = pocketbase.authStore.model;
+
+  const cant = !user.permissions.includes("delete") && user?.id !== link.ownerId;
+
+  const button = (
     <Button
       px={"xs"}
       bg="red"
       key={link.id}
+      disabled={cant}
       onClick={async () => {
         try {
           // if (import.meta.env.DEV) throw new ClientResponseError("lmao");
@@ -34,5 +39,13 @@ export default function DeleteButton({ link }: { link: PBLink }) {
     >
       <IconTrash />
     </Button>
+  );
+
+  return cant ? (
+    <Tooltip label="Missing permissions" position="left">
+      {button}
+    </Tooltip>
+  ) : (
+    button
   );
 }

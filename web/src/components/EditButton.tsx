@@ -1,4 +1,4 @@
-import { Button, Flex, Modal, Select, TextInput } from "@mantine/core";
+import { Button, Flex, Modal, Select, TextInput, Tooltip } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -24,6 +24,16 @@ export default function EditButton({ link }: { link: PBLink }) {
   });
 
   const [openModal, modalControls] = useDisclosure();
+
+  const user = pocketbase.authStore.model;
+
+  const cant = !user.permissions.includes("update") && user?.id !== link.ownerId;
+
+  const button = (
+    <Button px={"xs"} onClick={modalControls.open}>
+      <IconEdit />
+    </Button>
+  );
 
   return (
     <>
@@ -70,9 +80,13 @@ export default function EditButton({ link }: { link: PBLink }) {
         </Flex>
       </Modal>
 
-      <Button px={"xs"} onClick={modalControls.open}>
-        <IconEdit />
-      </Button>
+      {cant ? (
+        <Tooltip label="Missing permissions" position="left">
+          {button}
+        </Tooltip>
+      ) : (
+        button
+      )}
     </>
   );
 }
