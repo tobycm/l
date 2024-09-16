@@ -2,6 +2,7 @@ import { Alert, Divider, Flex, Loader, Title } from "@mantine/core";
 
 import { useMediaQuery } from "@mantine/hooks";
 import { Notifications, notifications } from "@mantine/notifications";
+import { IconExclamationCircle } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import pocketbase from "../../../pocketbase";
 import LoginForm from "../components/LoginForm";
@@ -30,6 +31,7 @@ export default function Login() {
       message: alert,
       color: "red",
       autoClose: 10000,
+      icon: <IconExclamationCircle />,
     });
   }
 

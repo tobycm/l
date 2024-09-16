@@ -46,6 +46,7 @@ export default function EditButton({ link }: { link: PBLink }) {
           // @ts-ignore lmao eslint
           onSubmit={form.onSubmit(async (values) => {
             try {
+              if (!values.slug.startsWith("/")) values.slug = `/${values.slug}`;
               await pocketbase.collection("links").update(link.id, values);
               await queryClient.invalidateQueries({ queryKey: ["links"] });
             } catch (error) {

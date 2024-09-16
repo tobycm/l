@@ -17,7 +17,7 @@ export default function CreateButton() {
       privacy: "",
     },
     validate: {
-      slug: (value) => value && value.trim().length > 1 && (value.match(/^\/[a-zA-Z0-9\-._~]*$/) ? null : "Please conform to /{slug} format"),
+      slug: isNotEmpty("Slug is required"),
       url: isNotEmpty("URL is required"),
     },
   });
@@ -35,6 +35,7 @@ export default function CreateButton() {
           // @ts-ignore lmao eslint
           onSubmit={form.onSubmit(async (values) => {
             try {
+              if (!values.slug.startsWith("/")) values.slug = `/${values.slug}`;
               await pocketbase.collection("links").create({ ...values, owner: pocketbase.authStore.model.id });
               await queryClient.invalidateQueries({ queryKey: ["links"] });
             } catch (error) {
