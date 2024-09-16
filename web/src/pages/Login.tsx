@@ -3,7 +3,6 @@ import { Alert, Divider, Flex, Loader, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { Notifications, notifications } from "@mantine/notifications";
 import { useQuery } from "@tanstack/react-query";
-import { ClientResponseError } from "pocketbase";
 import pocketbase from "../../../pocketbase";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
@@ -17,7 +16,9 @@ export default function Login() {
       try {
         await pocketbase.collection("users").create({});
       } catch (error) {
-        return error instanceof ClientResponseError && error.status === 400;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore instanceof doesnt really work when built
+        return error.status === 400;
       }
 
       return false;

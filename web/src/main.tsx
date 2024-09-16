@@ -7,7 +7,6 @@ import "@fontsource/ubuntu";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { ClientResponseError } from "pocketbase";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import pocketbase from "../../pocketbase";
@@ -28,7 +27,9 @@ queryClient.fetchQuery({
     try {
       await pocketbase.collection("users").create({});
     } catch (error) {
-      return error instanceof ClientResponseError && error.status === 400;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore instanceof doesnt really work when built
+      return error.status === 400;
     }
 
     return false;
