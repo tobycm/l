@@ -36,6 +36,8 @@ export default function RegisterForm({ setAlert }: { setAlert: (alert: ReturnTyp
               password: values.password,
               passwordConfirm: values.passwordConfirm,
             });
+            await pocketbase.collection("users").authWithPassword(values.username, values.password);
+            navigate("/");
           } catch (error) {
             if (error instanceof ClientResponseError)
               setAlert(
@@ -44,8 +46,6 @@ export default function RegisterForm({ setAlert }: { setAlert: (alert: ReturnTyp
                 </Alert>
               );
           }
-
-          navigate("/");
         })}
       >
         <Flex mt="xl" direction="column">

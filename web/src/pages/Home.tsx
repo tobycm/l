@@ -1,8 +1,9 @@
 import { Flex, Loader, rgba, ScrollArea, Table, TableData, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import pocketbase from "../../../pocketbase";
+import { User } from "../../../pocketbase/models";
 import CreateButton from "../components/CreateButton";
 import DeleteButton from "../components/DeleteButton";
 import EditButton from "../components/EditButton";
@@ -16,7 +17,9 @@ export default function Home() {
     initialData: [],
   });
 
-  const user = pocketbase.authStore.model;
+  const [user, setUser] = useState(pocketbase.authStore.model);
+
+  useEffect(() => pocketbase.authStore.onChange((_, model) => setUser(model as User)), []);
 
   useEffect(() => {
     if (user) return;
