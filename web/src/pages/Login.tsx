@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import pocketbase from "../../../pocketbase";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
+import SocialLogins from "../components/SocialLogins";
 
 export default function Login() {
   const isMobile = useMediaQuery("(max-width: 40em)");
@@ -45,6 +46,8 @@ export default function Login() {
       </Flex>
     );
 
+  const socialLogins = <SocialLogins />;
+
   return (
     <>
       <Notifications limit={5} />
@@ -62,6 +65,9 @@ export default function Login() {
           ) : null}
 
           {registerOk.data ? <RegisterForm setAlert={setAlert} /> : null}
+
+          {socialLogins && <Divider size="sm" {...(isMobile ? { w: "60%", my: "lg" } : { h: "50vh", my: "auto" })} orientation="vertical" />}
+          {socialLogins}
         </Flex>
       </Flex>
     </>
