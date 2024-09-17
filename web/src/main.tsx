@@ -36,6 +36,12 @@ queryClient.fetchQuery({
   },
 });
 
+queryClient.fetchQuery({
+  queryKey: ["authMethods"],
+  queryFn: async () => (await pocketbase.collection("users").listAuthMethods()).authProviders,
+  initialData: [],
+});
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>

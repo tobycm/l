@@ -27,6 +27,12 @@ export default function Login() {
     },
   });
 
+  const authMethods = useQuery({
+    queryKey: ["authMethods"],
+    queryFn: async () => (await pocketbase.collection("users").listAuthMethods()).authProviders,
+    initialData: [],
+  });
+
   function setAlert(alert: ReturnType<typeof Alert>) {
     notifications.show({
       message: alert,
@@ -36,7 +42,7 @@ export default function Login() {
     });
   }
 
-  if (!registerOk.isFetched)
+  if (!registerOk.isFetched || !authMethods.isFetched)
     return (
       <Flex w="100vw" h="100vh">
         <Flex justify="center" align="center" m="auto" direction="column">
@@ -53,20 +59,26 @@ export default function Login() {
       <Notifications limit={5} />
 
       <Flex {...(isMobile ? { w: "90vw", mt: "lg" } : { w: "80vw", h: "100vh" })} mx="auto" align="center">
-        <Flex direction={isMobile ? "column" : "row"} w="100%" maw="48rem" mx="auto" justify="space-between" align={isMobile ? "center" : "start"}>
+        <Flex direction={isMobile ? "column" : "row"} w="100%" maw="64rem" mx="auto" justify="space-between" align={isMobile ? "center" : "start"}>
           <LoginForm setAlert={setAlert} />
 
-          {registerOk.data ? (
+          {registerOk.data && (
             <Divider
               size="sm"
               {...(isMobile ? { w: "60%", my: "lg" } : { h: "50vh", my: "auto" })}
               orientation={isMobile ? "horizontal" : "vertical"}
             />
-          ) : null}
+          )}
 
-          {registerOk.data ? <RegisterForm setAlert={setAlert} /> : null}
+          {registerOk.data && <RegisterForm setAlert={setAlert} />}
 
-          {socialLogins && <Divider size="sm" {...(isMobile ? { w: "60%", my: "lg" } : { h: "50vh", my: "auto" })} orientation="vertical" />}
+          {authMethods.data.length !== 0 && (
+            <Divider
+              size="sm"
+              {...(isMobile ? { w: "60%", my: "lg" } : { h: "50vh", my: "auto" })}
+              orientation={isMobile ? "horizontal" : "vertical"}
+            />
+          )}
           {socialLogins}
         </Flex>
       </Flex>
