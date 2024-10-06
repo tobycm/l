@@ -3,8 +3,8 @@ import { notifications } from "@mantine/notifications";
 import { IconExclamationCircle, IconTrash } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ClientResponseError } from "pocketbase";
-import pocketbase from "../../../pocketbase";
 import { PBLink } from "../../../pocketbase/models";
+import pocketbase from "../lib/database";
 
 export default function DeleteButton({ link }: { link: PBLink }) {
   const queryClient = useQueryClient();

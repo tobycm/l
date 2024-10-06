@@ -3,7 +3,7 @@ import { Alert, Button, Flex, PasswordInput, TextInput, Title } from "@mantine/c
 import { isNotEmpty, useForm } from "@mantine/form";
 import { ClientResponseError } from "pocketbase";
 import { useNavigate } from "react-router-dom";
-import pocketbase from "../../../pocketbase";
+import pocketbase from "../lib/database";
 
 export default function RegisterForm({ setAlert }: { setAlert: (alert: ReturnType<typeof Alert>) => void }) {
   const navigate = useNavigate();

@@ -2,12 +2,12 @@ import { Flex, Loader, rgba, ScrollArea, Table, TableData, Title } from "@mantin
 import { useQuery } from "@tanstack/react-query";
 
 import { useEffect, useState } from "react";
-import pocketbase from "../../../pocketbase";
 import { User } from "../../../pocketbase/models";
 import CreateButton from "../components/CreateButton";
 import DeleteButton from "../components/DeleteButton";
 import EditButton from "../components/EditButton";
 import ShareButton from "../components/ShareButton";
+import pocketbase from "../lib/database";
 import { toTitleCase } from "../lib/utils";
 
 export default function Home() {

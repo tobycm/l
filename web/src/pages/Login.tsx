@@ -4,10 +4,10 @@ import { useMediaQuery } from "@mantine/hooks";
 import { Notifications, notifications } from "@mantine/notifications";
 import { IconExclamationCircle } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import pocketbase from "../../../pocketbase";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import SocialLogins from "../components/SocialLogins";
+import pocketbase from "../lib/database";
 
 export default function Login() {
   const isMobile = useMediaQuery("(max-width: 40em)");

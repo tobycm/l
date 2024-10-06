@@ -5,7 +5,7 @@ import { notifications } from "@mantine/notifications";
 import { IconCirclePlus, IconDeviceFloppy, IconExclamationCircle } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ClientResponseError } from "pocketbase";
-import pocketbase from "../../../pocketbase";
+import pocketbase from "../lib/database";
 
 export default function CreateButton() {
   const queryClient = useQueryClient();

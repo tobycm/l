@@ -1,5 +1,16 @@
 FROM oven/bun:latest AS build
 
+WORKDIR /app
+
+COPY ./package.json .
+COPY ./bun.lockb .
+
+RUN bun install
+
+WORKDIR /app/pocketbase
+
+COPY ./pocketbase/*.ts .
+
 WORKDIR /app/web
 
 COPY ./web/package.json .
@@ -7,20 +18,9 @@ COPY ./web/bun.lockb .
 
 RUN bun install
 
-
-COPY ./web/index.html .
-COPY ./web/vite.config.ts .
-COPY ./web/postcss.config.cjs .
-COPY ./web/src .
-COPY ./web/public .
-
-WORKDIR /app/pocketbase
-
-COPY ./pocketbase/*.ts .
-
-
-
 WORKDIR /app/web
+
+COPY ./web .
 
 RUN bun run build
 

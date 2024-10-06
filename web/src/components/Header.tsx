@@ -1,7 +1,7 @@
 import { Flex, Image, Menu } from "@mantine/core";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import pocketbase from "../../../pocketbase";
+import pocketbase from "../lib/database";
 
 import { IconLogout } from "@tabler/icons-react";
 import logo from "/MATHEOS.svg";

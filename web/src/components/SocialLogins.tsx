@@ -1,7 +1,7 @@
 import { Button, Flex, Loader, Text, Title } from "@mantine/core";
 import { IconBrandDiscord, IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import pocketbase from "../../../pocketbase";
+import pocketbase from "../lib/database";
 
 const providerIcons = {
   google: <IconBrandGoogle />,
