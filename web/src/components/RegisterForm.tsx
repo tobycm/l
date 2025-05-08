@@ -1,7 +1,8 @@
-import { Alert, Button, Flex, PasswordInput, TextInput, Title } from "@mantine/core";
+import { Alert, Button, Flex, Loader, PasswordInput, TextInput, Title } from "@mantine/core";
 
 import { isNotEmpty, useForm } from "@mantine/form";
 import { ClientResponseError } from "pocketbase";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import pocketbase from "../lib/database";
 
@@ -22,6 +23,8 @@ export default function RegisterForm({ setAlert }: { setAlert: (alert: ReturnTyp
     },
   });
 
+  const [registering, setRegistering] = useState(false);
+
   return (
     <Flex direction="column" justify="center" miw="30%" w="auto">
       <Title order={1}>Register</Title>
@@ -30,6 +33,7 @@ export default function RegisterForm({ setAlert }: { setAlert: (alert: ReturnTyp
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore lmao eslint ồn thật
         onSubmit={form.onSubmit(async (values) => {
+          setRegistering(true);
           try {
             await pocketbase.collection("users").create({
               username: values.username,
@@ -45,6 +49,8 @@ export default function RegisterForm({ setAlert }: { setAlert: (alert: ReturnTyp
                   {error.message}
                 </Alert>
               );
+          } finally {
+            setRegistering(false);
           }
         })}
       >
@@ -67,8 +73,8 @@ export default function RegisterForm({ setAlert }: { setAlert: (alert: ReturnTyp
             {...form.getInputProps("passwordConfirm")}
           />
           <Flex mt="xl">
-            <Button color="cyan" type="submit">
-              Register
+            <Button color="cyan" type="submit" disabled={!!registering}>
+              {registering ? <Loader m="lg" size="sm" /> : "Register"}
             </Button>
           </Flex>
         </Flex>

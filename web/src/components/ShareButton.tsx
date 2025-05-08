@@ -22,13 +22,7 @@ export default function ShareButton({ link }: { link: PBLink }) {
           </a>
         </Text>
 
-        <Image
-          src={`data:image/png;base64,${Buffer.from(qr).toString("base64")}`}
-          alt={`QR Code for ${fullLink}`}
-          width={200}
-          height={200}
-          mb={"lg"}
-        />
+        <Image src={`data:image/svg+xml;base64,${btoa(decodeURIComponent(encodeURIComponent(qr)))}`} alt={`QR Code for ${fullLink}`} mb={"lg"} />
 
         <Anchor
           href={`${import.meta.env.VITE_QR_CODE_WEB ?? "https://qr.tobycm.dev"}/?data=${encodeURIComponent(fullLink)}`}

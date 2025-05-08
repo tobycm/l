@@ -1,7 +1,8 @@
-import { Alert, Button, Flex, PasswordInput, Text, TextInput, Title } from "@mantine/core";
+import { Alert, Button, Flex, Loader, PasswordInput, Text, TextInput, Title } from "@mantine/core";
 
 import { isNotEmpty, useForm } from "@mantine/form";
 import { ClientResponseError } from "pocketbase";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import pocketbase from "../lib/database";
 
@@ -24,6 +25,8 @@ export default function LoginForm({ setAlert }: { setAlert: (alert: ReturnType<t
     },
   });
 
+  const [loggingIn, setLoggingIn] = useState<"normal" | "guest">();
+
   return (
     <Flex direction="column" justify="center" miw="30%" w="auto">
       <Title order={1}>Login</Title>
@@ -32,6 +35,7 @@ export default function LoginForm({ setAlert }: { setAlert: (alert: ReturnType<t
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore lmao eslint ồn thật
         onSubmit={form.onSubmit(async (values) => {
+          setLoggingIn("normal");
           try {
             await pocketbase.collection("users").authWithPassword(values.username, values.password);
             navigate("/");
@@ -42,6 +46,8 @@ export default function LoginForm({ setAlert }: { setAlert: (alert: ReturnType<t
                   {error.message}
                 </Alert>
               );
+          } finally {
+            setLoggingIn(undefined);
           }
         })}
       >
@@ -56,8 +62,8 @@ export default function LoginForm({ setAlert }: { setAlert: (alert: ReturnType<t
             {...form.getInputProps("password")}
           />
           <Flex mt="xl">
-            <Button color="cyan" type="submit">
-              Sign in
+            <Button color="cyan" type="submit" disabled={!!loggingIn}>
+              {loggingIn === "normal" ? <Loader m="lg" size="sm" /> : "Sign in"}
             </Button>
           </Flex>
 
@@ -65,7 +71,9 @@ export default function LoginForm({ setAlert }: { setAlert: (alert: ReturnType<t
 
           <Button
             color="yellow"
+            disabled={!!loggingIn}
             onClick={async () => {
+              setLoggingIn("guest");
               try {
                 await pocketbase.collection("users").authWithPassword(guestCredentials.username, guestCredentials.password);
                 navigate("/");
@@ -76,10 +84,12 @@ export default function LoginForm({ setAlert }: { setAlert: (alert: ReturnType<t
                       Guest account is not available
                     </Alert>
                   );
+              } finally {
+                setLoggingIn(undefined);
               }
             }}
           >
-            Continue as guest
+            {loggingIn === "guest" ? <Loader m="lg" size="sm" /> : "Continue as guest"}
           </Button>
         </Flex>
       </Flex>
