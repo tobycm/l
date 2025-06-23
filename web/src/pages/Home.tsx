@@ -36,17 +36,19 @@ export default function Home() {
 
   const data: TableData = {
     head: ["Edit", "Slug", "URL", "Owner", "Privacy", "Created", "Updated", "Share", "Delete"],
-    body: links.data.map((link) => [
-      <EditButton link={link} key={link.id} />,
-      link.slug,
-      link.url,
-      link.expand.owner.name || link.expand.owner.username || link.expand.owner.email,
-      toTitleCase(link.privacy || "Public"),
-      new Date(link.created).toLocaleDateString(),
-      new Date(link.updated).toLocaleDateString(),
-      <ShareButton link={link} key={link.id} />,
-      <DeleteButton link={link} key={link.id} />,
-    ]),
+    body: links.data
+      .sort((link1, link2) => new Date(link2.updated).getTime() - new Date(link1.updated).getTime())
+      .map((link) => [
+        <EditButton link={link} key={link.id} />,
+        link.slug,
+        link.url,
+        link.expand.owner.name || link.expand.owner.username || link.expand.owner.email,
+        toTitleCase(link.privacy || "Public"),
+        new Date(link.created).toLocaleDateString(),
+        new Date(link.updated).toLocaleDateString(),
+        <ShareButton link={link} key={link.id} />,
+        <DeleteButton link={link} key={link.id} />,
+      ]),
   };
 
   return (
